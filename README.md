@@ -196,7 +196,7 @@ volumes:
 </p>
 
 ```bash
-root@groupe4:~/wordpress# docker-compose up -d
+root@groupe4:~/zabbix# docker-compose up -d
 ```
 
 <p>
@@ -204,4 +204,16 @@ root@groupe4:~/wordpress# docker-compose up -d
   Sur la page, connectez-vous avec les identifiants par défaut (Admin / zabbix).
 </p>
 
-<center><img src="assets/zabbix.png" width="600"></center>
+<img src="assets/zabbix.png" width="600">
+
+- - - 
+
+<h2>Étape 4 : Clôner un dépot distant vers sa VM</h2>
+
+<p>
+  
+</p>
+
+```bash
+root@groupe4:~# 
+```
