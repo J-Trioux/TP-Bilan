@@ -99,7 +99,109 @@ root@groupe4:~/wordpress# docker-compose up -d
 root@groupe4:~/wordpress# docker run --rm wordpress:latest php -v
 ```
 <p>
-  Il ne reste plus qu'à se connecter sur l'adresse suivante : <b>http://votre-ip:8000</b>
+  Il ne reste plus qu'à se connecter sur l'adresse suivante : <b>http://votre-ip:8000</b> <br>
+  Sur la page, configurez le setup du Wordpress et connectez-vous.
 </p>
 
-<img src="https://raw.githubusercontent.com/J-Trioux/TP-Bilan/main/wordpress.png>" alt="Image de la page d'accueil de Wordpress" />
+<center><img src="assets/wordpress.png" width="600"></center>
+
+- - - 
+
+<h2>Étape 3 : Mise en service d'un Zabbix</h2>
+
+<p>
+  Comme pour Wordpress, nous créerons également un autre répertoire pour accueillir le docker-compose de Zabbix.
+</p>
+
+```bash
+root@groupe4:~/ mkdir ~/zabbix && cd ~/zabbix
+root@groupe4:~/ nano docker-compose.yml
+```
+
+<p>
+  À l'intérieur du fichier, copiez collez ce fichier de configuration comprenant tous les services nécessaires à l'exécution de Zabbix.
+</p>
+
+```bash
+version: "3.8"
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: zabbix-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: zabbix
+      POSTGRES_PASSWORD: zabbixpwd
+      POSTGRES_DB: zabbix
+      TZ: Europe/Paris
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+
+  zabbix-server:
+    image: zabbix/zabbix-server-pgsql:ubuntu-7.0-latest
+    container_name: zabbix-server
+    depends_on:
+      - postgres
+    restart: unless-stopped
+    environment:
+      DB_SERVER_HOST: postgres
+      POSTGRES_USER: zabbix
+      POSTGRES_PASSWORD: zabbixpwd
+      POSTGRES_DB: zabbix
+      ZBX_DEBUGLEVEL: 3
+      TZ: Europe/Paris
+    ports:
+      - "10051:10051"
+    volumes:
+      - zbx_alertscripts:/usr/lib/zabbix/alertscripts
+      - zbx_external:/usr/lib/zabbix/externalscripts
+
+  zabbix-web:
+    image: zabbix/zabbix-web-nginx-pgsql:ubuntu-7.0-latest
+    container_name: zabbix-web
+    depends_on:
+      - zabbix-server
+      - postgres
+    restart: unless-stopped
+    environment:
+      DB_SERVER_HOST: postgres
+      POSTGRES_USER: zabbix
+      POSTGRES_PASSWORD: zabbixpwd
+      POSTGRES_DB: zabbix
+      ZBX_SERVER_HOST: zabbix-server
+      PHP_TZ: Europe/Paris
+    ports:
+      - "8080:8080"  # accès via http://votre-ip:8080
+
+  zabbix-agent2:
+    image: zabbix/zabbix-agent2:ubuntu-7.0-latest
+    container_name: zabbix-agent2
+    restart: unless-stopped
+    environment:
+      ZBX_SERVER_HOST: zabbix-server
+      ZBX_HOSTNAME: zabbix-agent-local
+      TZ: Europe/Paris
+    depends_on:
+      - zabbix-server
+
+volumes:
+  pg_data:
+  zbx_alertscripts:
+  zbx_external:
+```
+
+<p>
+  On exécute la commande <b>docker-compose.yml</b> : 
+</p>
+
+```bash
+root@groupe4:~/wordpress# docker-compose up -d
+```
+
+<p>
+  Il ne reste plus qu'à se connecter sur l'adresse suivante : <b>http://votre-ip:8080</b> <br>
+  Sur la page, connectez-vous avec les identifiants par défaut (Admin / zabbix).
+</p>
+
+<center><img src="assets/zabbix.png" width="600"></center>
