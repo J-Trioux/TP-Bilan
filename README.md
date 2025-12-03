@@ -113,7 +113,7 @@ root@groupe4:~/wordpress# docker run --rm wordpress:latest php -v
   Sur la page, configurez le setup du Wordpress et connectez-vous.
 </p>
 
-<center><img src="assets/wordpress-end.png" width="500"></center>
+<center><img src="assets/wordpress-end.png" width="600"></center>
 
 - - - 
 
