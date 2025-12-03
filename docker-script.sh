@@ -3,11 +3,11 @@
 # Si erreur DPKG alors
 dpkg --configure -a
 
-# Mise à jour des dépendances et des paquets
+# Mise à jour des dépendances, des paquets et création du répertoire keyrings
 apt update && apt upgrade -y
 apt install ca-certificates curl gnupg lsb-release -y
-
-# Création du dossier keyrings (manquant dans ton script)
+mkdir -p /etc/apt/keyringsapt update && apt upgrade -y
+apt install ca-certificates curl gnupg lsb-release -y
 mkdir -p /etc/apt/keyrings
 
 # Ajout de la clé de signature Docker
