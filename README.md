@@ -21,14 +21,21 @@ Sur cette page, vous pourrez retrouver un script d'installation de Docker et Doc
 # Si erreur DPKG alors
 dpkg --configure -a
 
-# Mise à jour des dépandances et des paquets
+# Mise à jour des dépendances, des paquets et création du répertoire keyrings
 apt update && apt upgrade -y
 apt install ca-certificates curl gnupg lsb-release -y
+mkdir -p /etc/apt/keyrings
 
-# Ajout du dépôt et de la clé signature officiel de Docker
-curl -fsSL https://download.docker.com/linux/debian/gpg -o /etc/apt/keyrings/docker.asc
-chmod a+r /etc/apt/keyrings/docker.asc
-echo "deb [arch="$(dpkg --print-architecture)" signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.c>
+# Ajout de la clé de signature Docker
+curl -fsSL https://download.docker.com/linux/debian/gpg | gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+chmod a+r /etc/apt/keyrings/docker.gpg
+
+# Ajout du dépôt officiel de Docker
+echo \
+  "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/debian \
+  $(. /etc/os-release && echo "$VERSION_CODENAME") stable" \
+  | tee /etc/apt/sources.list.d/docker.list > /dev/null
+
 apt update
 
 # Installation de Docker et Docker-Compose
@@ -37,7 +44,7 @@ apt install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-co
 # Activation automatique de Docker au démarrage
 systemctl enable docker --now
 
-# Affichage du status de Docker
+# Affichage du statut de Docker
 systemctl status docker
 ```
 
