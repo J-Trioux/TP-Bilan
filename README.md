@@ -218,9 +218,17 @@ root@groupe4:~/zabbix# docker-compose up -d
 <h2>Étape 4 : Clôner un dépot distant vers sa VM</h2>
 
 <p>
-  
+  Pour clôner un git à distance, vous pouvez le faire soit par SSH, soit par l'URL HTTPS. Nous clonerons depuis le HTTPS puisque le dépôt est en publique.
 </p>
 
 ```bash
-root@groupe4:~# 
+root@groupe4:~# apt install git -y
+...
+root@groupe4:~# mkdir -p /home/[votre_répertoire]/[votre_dossier_git] && cd /home/user/bilan
+...
+root@groupe4:~# git clone https://github.com/J-Trioux/TP-Bilan.git
 ```
+
+<p>
+  Une fois le dépôt cloné, exécutez le script <b>docker-script.sh</b> et normalement vous finirez l'installation par le statut actif de Docker.
+</p>
