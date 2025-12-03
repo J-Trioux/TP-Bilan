@@ -52,7 +52,7 @@ systemctl status docker
 
 <h2>Étape 2 : Mise en service d'un Wordpress</h2>
 
-<center><img src="assets/wordpress-logo.png" width="600"></center>
+<center><img src="assets/wordpress-logo.png" width="400"></center>
 
 
 <p>
@@ -119,7 +119,7 @@ root@groupe4:~/wordpress# docker run --rm wordpress:latest php -v
 
 <h2>Étape 3 : Mise en service d'un Zabbix</h2>
 
-<center><img src="assets/zabbix-logo" width="600"></center>
+<center><img src="assets/zabbix.svg" width="400"></center>
 
 
 <p>
